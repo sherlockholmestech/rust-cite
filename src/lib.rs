@@ -1,39 +1,38 @@
-use chrono::{DateTime, Utc};
+mod common_types;
+mod website;
 
-struct Author {
-    first_name: String,
-    last_name: String,
-}
-
-struct Citation {
-    type_: String,
-    author: Author,
-    title: String,
-    date_published: Option<DateTime<Utc>>,
-    date_original_published: Option<DateTime<Utc>>,
-    date_accessed: DateTime<Utc>,
-    edition: Option<String>,
-    volume: Option<String>,
-    issue: Option<String>,
-    page_range: Option<String>,
-    isbn: Option<String>,
-    url: Option<String>,
-    website_title: Option<String>,
-    publisher: Option<String>,
-    doi: Option<String>,
-}
-
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
-
+// Tests
 #[cfg(test)]
 mod tests {
     use super::*;
-
+    use crate::common_types;
+    // Check if the `Author` enum can be used in the `Website` struct
     #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+    fn test_author_in_website() {
+        let author = common_types::Author::new_individual("John", "Doe");
+        let website = website::Website::new(
+            author,
+            "Test",
+            None,
+            chrono::Utc::now(),
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+        );
+        assert_eq!(website.title, "Test");
+        match website.author {
+            common_types::Author::Individual(person) => {
+                assert_eq!(person.first_name, "John");
+                assert_eq!(person.last_name, "Doe");
+            }
+            _ => panic!("Expected an individual author"),
+        }
+
     }
 }
