@@ -1,7 +1,6 @@
 use crate::types;
 
-pub struct Chicago {
-}
+pub struct Chicago;
 
 impl Chicago {
     pub fn generate_bibiography(source: types::SourceTypes ) -> String {

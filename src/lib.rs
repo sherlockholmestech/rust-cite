@@ -5,7 +5,7 @@ pub mod citation_styles;
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::types::{self, website};
+    use crate::types;
     // Check if the `Author` enum can be used in the `Website` struct
     #[test]
     fn website_chicago() {
