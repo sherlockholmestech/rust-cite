@@ -1,38 +1,30 @@
-mod common_types;
-mod website;
+pub mod types;
+pub mod citation_styles;
 
 // Tests
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::common_types;
+    use crate::types::{self, website};
     // Check if the `Author` enum can be used in the `Website` struct
     #[test]
-    fn test_author_in_website() {
-        let author = common_types::Author::new_individual("John", "Doe");
-        let website = website::Website::new(
+    fn website_chicago() {
+        let author = types::Author::new_individual("John", "Doe");
+        let date_accessed = chrono::Utc::now();
+        let website = types::Website::new(
             author,
-            "Test",
-            None,
-            chrono::Utc::now(),
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
-            None,
+            "Example Page",
+            Some(chrono::Utc::now()),
+            date_accessed,
+            "https://example.com",
+            "Example Website",
+            "Example Publisher",
         );
-        assert_eq!(website.title, "Test");
-        match website.author {
-            common_types::Author::Individual(person) => {
-                assert_eq!(person.first_name, "John");
-                assert_eq!(person.last_name, "Doe");
-            }
-            _ => panic!("Expected an individual author"),
-        }
+
+        let source = types::SourceTypes::Website(website);
+        let footnote = citation_styles::chicago::Chicago::generate_bibiography(source);
+        println!("{footnote}");
+        assert!(footnote.contains("John Doe"));
 
     }
 }
