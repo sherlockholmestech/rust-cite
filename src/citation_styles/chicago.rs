@@ -6,12 +6,13 @@ impl Chicago {
     pub fn generate_bibiography(source: types::SourceTypes ) -> String {
         match source {
             types::SourceTypes::Website(website) => {
-                // Generate footnote for website
+                // Generate bibiography for website
                 let author = match website.author {
                     types::Author::Individual(person) => format!("{} {}", person.first_name, person.last_name),
                     types::Author::Organisation(org) => org,
                 };
                 match website.date_published {
+                    // Check if there is a date published
                     Some(date) => {
                         let date_published = date.format("%B%e, %Y").to_string();
                         format!(
